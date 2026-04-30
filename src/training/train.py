@@ -68,8 +68,10 @@ def train():
     torch.save(model.state_dict(), t_cfg['model_save_path'])
     print(f"تم تحديث XenonBrain بنجاح! النسخة الجديدة محفوظة في: {t_cfg['model_save_path']}")
 
-    # توليد التقرير اليومي وتحديث الذاكرة
+    # توليد التقرير اليومي وتحديث الذاكرة والرسوم البيانية
     generate_daily_report(model, dataloader, device)
+    from utils.visualizer import generate_visuals
+    generate_visuals()
 
 def generate_daily_report(model, dataloader, device):
     from data.data_processor import RealDataCollector
