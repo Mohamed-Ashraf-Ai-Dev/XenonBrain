@@ -1,0 +1,20 @@
+model:
+  input_dim: 389  # 384 (News Embedding) + 5 (Market Features)
+  hidden_dim: 128
+  output_dim: 2
+  num_layers: 6
+  nhead: 8
+
+training:
+  batch_size: 8
+  epochs: 15
+  learning_rate: 0.0005
+  model_save_path: "models/xenon_brain_latest.pth"
+
+data:
+  news_sources:
+    - "https://news.mit.edu/rss/topic/artificial-intelligence2"
+    - "https://www.theverge.com/rss/index.xml"
+    - "https://techcrunch.com/feed/"
+  market_ticker: "^GSPC"
+  sequence_length: 5

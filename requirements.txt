@@ -1,0 +1,15 @@
+torch
+torchvision
+torchaudio
+numpy
+pandas
+pyyaml
+scikit-learn
+requests
+beautifulsoup4
+tqdm
+feedparser
+yfinance
+sentence-transformers
+transformers
+
