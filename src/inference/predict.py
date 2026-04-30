@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import sys
 import os
 import yaml
+import json
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
@@ -37,18 +38,24 @@ class XenonInference:
         self.text_model = SentenceTransformer('all-MiniLM-L6-v2')
 
     def run_logic(self, news_text, market_data_list):
-        """
-        تشغيل الاستنتاج المنطقي بناءً على نص وخلفية بيانات.
-        news_text: نص الخبر الحالي.
-        market_data_list: قائمة بـ 5 خطوات زمنية لبيانات السوق [Open, High, Low, Close, Volume].
-        """
         # تحويل النص إلى embedding
         text_emb = self.text_model.encode([news_text])[0]
         
-        # دمج البيانات
+        # جلب الذاكرة التاريخية إذا وجدت
+        memory_val = 0.5
+        history_file = "HISTORY.json"
+        if os.path.exists(history_file):
+            try:
+                with open(history_file, 'r') as f:
+                    h = json.load(f)
+                    if len(h) > 0:
+                        memory_val = np.mean([i['prediction'] for i in h])
+            except: pass
+
+        # دمج البيانات (الأخبار + السوق + الذاكرة) لتطابق أبعاد التدريب (390)
         combined_seq = []
         for m_step in market_data_list:
-            combined_step = np.concatenate([text_emb, m_step])
+            combined_step = np.concatenate([text_emb, m_step, [memory_val]])
             combined_seq.append(combined_step)
         
         input_tensor = torch.FloatTensor([combined_seq]).to(self.device)
@@ -65,7 +72,6 @@ class XenonInference:
         }
 
 if __name__ == "__main__":
-    # تجربة استدلال سريعة
     engine = XenonInference()
     sample_market = [[0.01, 0.02, -0.01, 0.01, 1000]] * 5
     result = engine.run_logic("AI breakthroughs in logic processing are accelerating.", sample_market)
