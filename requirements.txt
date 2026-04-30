@@ -13,3 +13,4 @@ yfinance
 sentence-transformers
 transformers
 
+matplotlib
