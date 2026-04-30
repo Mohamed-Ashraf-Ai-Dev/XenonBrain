@@ -1,13 +1,21 @@
-name: XenonBrain Continuous Evolution
+name: XenonBrain Continuous Evolution & Dashboard
+
 on:
   schedule:
     - cron: '0 0 * * *'
   push:
     branches:
       - main
-  workflow_dispatch: 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
 jobs:
-  train:
+  train_and_deploy:
     runs-on: ubuntu-latest
     steps:
     - name: 🧬 Accessing Xenon Core
@@ -27,16 +35,37 @@ jobs:
       run: |
         python src/training/train.py
         
-    - name: 🚀 Committing Evolution to XenonBrain
+    - name: 🔔 Checking Logic Shifts
+      run: |
+        python src/utils/notifier.py
+        if [ -f ALERT.txt ]; then
+          gh issue create --title "🚨 XenonBrain: Logic Shift Detected" --body-file ALERT.txt
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🚀 Committing Evolution & Deploying Dashboard
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "XenonBrain Core"
-        git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json
-        
-        # 
-        COMMIT_MSG="🧠 XenonBrain Evolution: System intelligence updated with latest global patterns [$(date +'%Y-%m-%d')]"
-        
-        git commit -m "$COMMIT_MSG" || echo "No evolution detected today."
+        git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/
+        git commit -m "🧠 Evolution: Global Intelligence & Dashboard updated [$(date +'%Y-%m-%d')]" || echo "No changes"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 🌐 Deploying Dashboard to GitHub Pages
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: './docs'
+
+  deploy_pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: train_and_deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
