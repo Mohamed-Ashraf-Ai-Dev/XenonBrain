@@ -1,14 +1,14 @@
 model:
-  input_dim: 389  # 384 (News Embedding) + 5 (Market Features)
+  input_dim: 390  # 384 (News) + 5 (Market) + 1 (Memory)
   hidden_dim: 128
   output_dim: 2
-  num_layers: 6
+  num_layers: 8
   nhead: 8
 
 training:
   batch_size: 8
-  epochs: 15
-  learning_rate: 0.0005
+  epochs: 20
+  learning_rate: 0.0003
   model_save_path: "models/xenon_brain_latest.pth"
 
 data:

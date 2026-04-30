@@ -68,10 +68,12 @@ def train():
     torch.save(model.state_dict(), t_cfg['model_save_path'])
     print(f"تم تحديث XenonBrain بنجاح! النسخة الجديدة محفوظة في: {t_cfg['model_save_path']}")
 
-    # توليد التقرير اليومي
+    # توليد التقرير اليومي وتحديث الذاكرة
     generate_daily_report(model, dataloader, device)
 
 def generate_daily_report(model, dataloader, device):
+    from data.data_processor import RealDataCollector
+    collector = RealDataCollector()
     import datetime
     model.eval()
     with torch.no_grad():
@@ -83,6 +85,9 @@ def generate_daily_report(model, dataloader, device):
         avg_probs = torch.mean(probs, dim=0)
         prediction = torch.argmax(avg_probs).item()
         confidence = avg_probs[prediction].item()
+    
+    # تحديث ذاكرة النظام بالنتيجة الجديدة
+    collector.update_history("Auto-generated summary from training session", prediction)
 
     date_str = datetime.datetime.now().strftime("%Y/%m/%d")
     status = "📈 صعودي (Positive)" if prediction == 1 else "📉 حذر/سلبي (Negative)"
