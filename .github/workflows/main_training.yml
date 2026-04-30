@@ -1,4 +1,4 @@
-name: XenonBrain Continuous Evolution & Dashboard
+Name: XenonBrain Continuous Evolution & Dashboard
 
 on:
   schedule:
@@ -26,9 +26,12 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: 📦 Loading Synaptic Dependencies
+    - name: 📦 Force Installing Synaptic Dependencies
       run: |
         python -m pip install --upgrade pip
+        # Mandatory installation of core libraries for stability
+        pip install torch numpy pandas requests feedparser yfinance sentence-transformers matplotlib pyyaml tqdm scikit-learn
+        # Install remaining dependencies from manifest
         pip install -r requirements.txt
         
     - name: 🧠 Executing Deep Logic Training
