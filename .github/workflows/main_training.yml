@@ -31,12 +31,13 @@ jobs:
       run: |
         python src/training/train.py
 
-    - name: Commit and Push Updated Model
+    - name: Commit and Push Updated Model, Report & Memory
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add models/xenon_brain_latest.pth
-        git commit -m "Auto-update XenonBrain model: $(date)" || echo "No changes to commit"
+        # إضافة ملف النموذج، التقرير اليومي، وملف الذاكرة التاريخية
+        git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json
+        git commit -m "Auto-update XenonBrain Evolution V3: Model, Report & Memory [$(date)]" || echo "No changes to commit"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
