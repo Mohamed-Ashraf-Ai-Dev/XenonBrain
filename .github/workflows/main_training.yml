@@ -1,43 +1,42 @@
-name: XenonBrain Continuous Training
-
+name: XenonBrain Continuous Evolution
 on:
   schedule:
-    # سيتم تشغيل التدريب تلقائيًا كل يوم في منتصف الليل (بتوقيت UTC)
     - cron: '0 0 * * *'
   push:
     branches:
       - main
-  workflow_dispatch: # يسمح بتشغيل التدريب يدويًا من واجهة GitHub
-
+  workflow_dispatch: 
 jobs:
   train:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
+    - name: 🧬 Accessing Xenon Core
       uses: actions/checkout@v3
-
-    - name: Set up Python
+      
+    - name: 🐍 Preparing Neural Environment
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-
-    - name: Install Dependencies
+        
+    - name: 📦 Loading Synaptic Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
-    - name: Run Data Collection & Training
+        
+    - name: 🧠 Executing Deep Logic Training
       run: |
         python src/training/train.py
-
-    - name: Commit and Push Updated Model, Report & Memory
+        
+    - name: 🚀 Committing Evolution to XenonBrain
       run: |
         git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        # إضافة ملف النموذج، التقرير اليومي، وملف الذاكرة التاريخية
+        git config --local user.name "XenonBrain Core"
         git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json
-        git commit -m "Auto-update XenonBrain Evolution V3: Model, Report & Memory [$(date)]" || echo "No changes to commit"
+        
+        # رسايل متغيرة وشيك بتعبر عن التطور
+        COMMIT_MSG="🧠 XenonBrain Evolution: System intelligence updated with latest global patterns [$(date +'%Y-%m-%d')]"
+        
+        git commit -m "$COMMIT_MSG" || echo "No evolution detected today."
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
