@@ -33,7 +33,7 @@ jobs:
         git config --local user.name "XenonBrain Core"
         git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json
         
-        # رسايل متغيرة وشيك بتعبر عن التطور
+        # 
         COMMIT_MSG="🧠 XenonBrain Evolution: System intelligence updated with latest global patterns [$(date +'%Y-%m-%d')]"
         
         git commit -m "$COMMIT_MSG" || echo "No evolution detected today."
