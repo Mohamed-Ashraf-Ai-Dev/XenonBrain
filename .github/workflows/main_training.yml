@@ -1,4 +1,4 @@
-Name: XenonBrain Continuous Evolution & Dashboard
+name: XenonBrain Continuous Evolution & Dashboard
 
 on:
   schedule:
