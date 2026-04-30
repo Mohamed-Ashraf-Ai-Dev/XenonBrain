@@ -1,0 +1,42 @@
+name: XenonBrain Continuous Training
+
+on:
+  schedule:
+    # سيتم تشغيل التدريب تلقائيًا كل يوم في منتصف الليل (بتوقيت UTC)
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
+  workflow_dispatch: # يسمح بتشغيل التدريب يدويًا من واجهة GitHub
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Data Collection & Training
+      run: |
+        python src/training/train.py
+
+    - name: Commit and Push Updated Model
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add models/xenon_brain_latest.pth
+        git commit -m "Auto-update XenonBrain model: $(date)" || echo "No changes to commit"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
