@@ -35,30 +35,30 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: 🧠 Executing Deep Logic Training (V5 Evolution)
-      run: |
-        python src/training/train.py
+      run: python src/training/train.py
+      env:
+        PYTHONPATH: .
 
     - name: 📧 Sending Daily Intelligence Report
-      run: |
-        python src/utils/email_notifier.py
+      run: python src/utils/email_notifier.py
       env:
+        PYTHONPATH: .
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         
     - name: 🔔 Checking Logic Shifts
-      run: |
-        python src/utils/notifier.py
-        if [ -f ALERT.txt ]; then
-          gh issue create --title "🚨 XenonBrain: Logic Shift Detected" --body-file ALERT.txt
-        fi
+      run: python src/utils/notifier.py
       env:
+        PYTHONPATH: .
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: 🚀 Committing Evolution & Deploying Dashboard
       run: |
+        if [ -f ALERT.txt ]; then
+          gh issue create --title "🚨 XenonBrain: Logic Shift Detected" --body-file ALERT.txt
+        fi
         git config --local user.email "action@github.com"
         git config --local user.name "XenonBrain Core"
-        # التأكد من إضافة كافة الملفات المحدثة بما فيها ملفات الموقع
         git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/
         git pull origin main --rebase --autostash
         git commit -m "🧠 Evolution V5: Sentiment Core & Email Reporting [$(date +'%Y-%m-%d')]" || echo "No changes"
