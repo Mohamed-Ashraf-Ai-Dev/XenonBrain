@@ -35,21 +35,27 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: 🧠 Executing Deep Logic Training (V5 Evolution)
-      run: python src/training/train.py
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+        python src/training/train.py
       env:
-        PYTHONPATH: .
+        PYTHONPATH: src
 
     - name: 📧 Sending Daily Intelligence Report
-      run: python src/utils/email_notifier.py
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+        python src/utils/email_notifier.py
       env:
-        PYTHONPATH: .
+        PYTHONPATH: src
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         
     - name: 🔔 Checking Logic Shifts
-      run: python src/utils/notifier.py
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+        python src/utils/notifier.py
       env:
-        PYTHONPATH: .
+        PYTHONPATH: src
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: 🚀 Committing Evolution & Deploying Dashboard
