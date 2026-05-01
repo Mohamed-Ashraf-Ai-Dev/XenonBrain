@@ -32,11 +32,18 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install torch numpy pandas requests feedparser yfinance sentence-transformers matplotlib pyyaml tqdm scikit-learn
-        pip install -r requirements.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: 🧠 Executing Deep Logic Training
+    - name: 🧠 Executing Deep Logic Training (V5 Evolution)
       run: |
         python src/training/train.py
+
+    - name: 📧 Sending Daily Intelligence Report
+      run: |
+        python src/utils/email_notifier.py
+      env:
+        SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+        SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         
     - name: 🔔 Checking Logic Shifts
       run: |
@@ -51,9 +58,10 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "XenonBrain Core"
+        # التأكد من إضافة كافة الملفات المحدثة بما فيها ملفات الموقع
         git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/
         git pull origin main --rebase --autostash
-        git commit -m "🧠 Evolution: Global Intelligence & Dashboard updated [$(date +'%Y-%m-%d')]" || echo "No changes"
+        git commit -m "🧠 Evolution V5: Sentiment Core & Email Reporting [$(date +'%Y-%m-%d')]" || echo "No changes"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -66,7 +74,6 @@ jobs:
   deploy_pages:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: train_and_deploy
     steps:
