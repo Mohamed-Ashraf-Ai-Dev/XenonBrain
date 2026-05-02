@@ -23,9 +23,9 @@ class XenonDataset(Dataset):
 
 class RealDataCollector:
     """
-    محرك XenonBrain المطور (V4.5+):
+    محرك XenonBrain المطور (V5 Global Intelligence):
     1. تحليل المشاعر وتقسيم البيانات (Logic Partitioning).
-    2. الذاكرة التصحيحية بناءً على أداء السوق.
+    2. الذاكرة التصحيحية بناءً على أداء السوق الحقيقي.
     """
     def __init__(self, raw_data_path="data/raw"):
         self.raw_data_path = raw_data_path
@@ -75,7 +75,10 @@ class RealDataCollector:
             except: continue
         return market_data
 
-    def update_history(self, news_summary, prediction, confidence=0.5):
+    def update_history(self, news_summary, prediction, confidence=0.5, actual_outcome=None):
+        """
+        تحديث سجل الذاكرة التاريخية مع دعم التعلم التصحيحي.
+        """
         history = []
         if os.path.exists(self.history_file):
             try:
@@ -83,13 +86,16 @@ class RealDataCollector:
                     history = json.load(f)
             except: pass
         
-        # تحسين ملخص الذاكرة ليكون أكثر فائدة
+        # إضافة السجل الجديد
         history.append({
             "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "summary": news_summary[:150],
+            "summary": str(news_summary)[:150],
             "prediction": int(prediction),
-            "confidence": float(confidence)
+            "confidence": float(confidence),
+            "actual_outcome": int(actual_outcome) if actual_outcome is not None else None
         })
+        
+        # الاحتفاظ بآخر 100 سجل فقط لضمان سرعة الأداء
         history = history[-100:] 
         with open(self.history_file, 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=4)
