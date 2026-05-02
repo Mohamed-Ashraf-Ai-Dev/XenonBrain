@@ -13,7 +13,6 @@ def send_email_report(report_content=None):
         print("خطأ: لم يتم العثور على إعدادات البريد الإلكتروني (Secrets).")
         return
 
-    # إذا لم يتم تمرير محتوى، حاول قراءته من ملف التقرير اليومي
     if report_content is None:
         if os.path.exists("DAILY_REPORT.md"):
             with open("DAILY_REPORT.md", "r", encoding="utf-8") as f:
@@ -27,7 +26,8 @@ def send_email_report(report_content=None):
     msg['To'] = receiver_email
     msg['Subject'] = f"🧠 تقرير XenonBrain اليومي | {datetime.datetime.now().strftime('%Y-%m-%d')}"
 
-    # تحويل التقرير من Markdown إلى تنسيق HTML بسيط ليظهر بشكل جميل في الإيميل
+    processed_report = report_content.replace('\n', '<br>').replace('###', '<h3>').replace('##', '<h2>').replace('**', '<b>')
+
     html_content = f"""
     <html>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; direction: rtl; text-align: right;">
@@ -35,7 +35,7 @@ def send_email_report(report_content=None):
             <h1 style="margin: 0;">XenonBrain Intelligence Report</h1>
         </div>
         <div style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 0 0 10px 10px;">
-            {report_content.replace('\n', '<br>').replace('###', '<h3>').replace('##', '<h2>').replace('**', '<b>')}
+            {processed_report}
         </div>
         <div style="margin-top: 20px; font-size: 0.8em; color: #718096; text-align: center;">
             هذا التقرير تم إنشاؤه تلقائياً بواسطة محرك XenonBrain V5.
