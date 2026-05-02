@@ -33,5 +33,12 @@
         "date": "2026-05-01 03:59:04",
         "summary": "Auto-generated summary from training session",
         "prediction": 1
+    },
+    {
+        "date": "2026-05-02 00:15:08",
+        "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
+        "prediction": 1,
+        "confidence": 0.6189517974853516,
+        "actual_outcome": null
     }
 ]
