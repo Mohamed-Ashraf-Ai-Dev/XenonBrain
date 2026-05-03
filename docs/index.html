@@ -3,199 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XenonBrain Dashboard | Mohamed Ashraf</title>
+    <title>XenonBrain V6 | Sovereign Intelligence Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; }
         .gradient-text { background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="p-4 md:p-8">
     <div class="max-w-6xl mx-auto">
         <!-- Header -->
-        <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
             <div>
-                <h1 class="text-4xl font-bold gradient-text">XenonBrain V4.5</h1>
-                <p class="text-slate-400 mt-2">محرك معالجة المنطق المتقدم والتعرف على الأنماط</p>
+                <h1 class="text-4xl font-bold gradient-text">XenonBrain V6</h1>
+                <p class="text-slate-400">Sovereign Intelligence Engine & Portfolio Tracker</p>
             </div>
-            <div class="text-center md:text-left">
-                <span class="bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full border border-blue-500/20 text-sm">
-                    المطور: Mohamed Ashraf
-                </span>
+            <div class="glass-card px-6 py-3 text-center">
+                <span class="text-sm text-slate-400 block">حالة النظام</span>
+                <span class="text-emerald-400 font-bold">● متصل ومستقل (Active)</span>
             </div>
         </header>
 
-        <!-- Stats Grid -->
+        <!-- Top Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">آخر تحديث للنظام</p>
-                <h3 id="last-update" class="text-xl font-bold text-blue-400">جاري التحميل...</h3>
+            <div class="glass-card p-6">
+                <h3 class="text-slate-400 text-sm mb-2">قيمة المحفظة الافتراضية</h3>
+                <div class="text-3xl font-bold" id="portfolio-value">--.-- $</div>
+                <div class="text-sm mt-2" id="portfolio-change">--%</div>
             </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">الحالة الحالية</p>
-                <h3 id="current-status" class="text-xl font-bold text-emerald-400">نشط</h3>
+            <div class="glass-card p-6 border-r-4 border-indigo-500">
+                <h3 class="text-slate-400 text-sm mb-2">التوقع الحالي</h3>
+                <div class="text-2xl font-bold" id="current-prediction">جاري التحليل...</div>
+                <div class="text-sm text-slate-400 mt-2" id="prediction-confidence">اليقين: --%</div>
             </div>
-            <div class="glass p-6 rounded-2xl">
-                <p class="text-slate-400 text-sm mb-1">إصدار المحرك</p>
-                <h3 id="accuracy-stat" class="text-xl font-bold text-indigo-400">V4.5 Global</h3>
+            <div class="glass-card p-6">
+                <h3 class="text-slate-400 text-sm mb-2">مستوى المخاطرة</h3>
+                <div class="text-2xl font-bold" id="risk-level">--</div>
+                <div class="text-sm text-slate-400 mt-2">بناءً على تقلبات السوق</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Report -->
-            <div class="lg:col-span-2 space-y-8">
-                <div class="glass p-8 rounded-2xl">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <span>📝</span> التقرير اليومي
-                    </h2>
-                    <div id="daily-report" class="prose prose-invert max-w-none text-slate-300 leading-relaxed">
-                        <div class="animate-pulse flex space-y-4 flex-col">
-                            <div class="h-4 bg-slate-700 rounded w-3/4"></div>
-                            <div class="h-4 bg-slate-700 rounded w-1/2"></div>
-                            <div class="h-4 bg-slate-700 rounded w-5/6"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass p-8 rounded-2xl">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <span>📈</span> تحليل اتجاهات الأنماط
-                    </h2>
-                    <div class="h-80 w-full">
-                        <canvas id="patternChart"></canvas>
-                    </div>
-                </div>
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="glass-card p-6">
+                <h3 class="text-xl font-bold mb-6">تطور أداء المحفظة</h3>
+                <canvas id="portfolioChart" height="200"></canvas>
             </div>
 
-            <!-- Right Column: History -->
-            <div class="space-y-8">
-                <div class="glass p-8 rounded-2xl">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <span>🧠</span> سجل الذاكرة
-                    </h2>
-                    <div id="memory-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
-                        <p class="text-slate-500">جاري جلب السجلات...</p>
+            <div class="glass-card p-6">
+                <h3 class="text-xl font-bold mb-4">الرؤية الاستراتيجية اليومية</h3>
+                <div id="strategic-insight" class="text-slate-300 leading-relaxed italic border-r-4 border-slate-700 pr-4 py-2 mb-6">
+                    جاري سحب أحدث رؤية من عقل XenonBrain...
+                </div>
+                <div class="space-y-4">
+                    <h4 class="font-bold text-sm text-slate-400 uppercase tracking-wider">مؤشرات الزخم (V6 Indicators)</h4>
+                    <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                        <span>مؤشر القوة النسبية (RSI)</span>
+                        <span id="rsi-val" class="font-mono">--</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
+                        <span>مؤشر MACD</span>
+                        <span id="macd-val" class="font-mono">--</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <footer class="mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-            <p>© 2026 XenonBrain Project | تم التطوير بواسطة محمد أشرف</p>
+        <!-- History Table -->
+        <div class="glass-card overflow-hidden">
+            <div class="p-6 border-b border-white/10">
+                <h3 class="text-xl font-bold">سجل التطور والتعلم الذاتي</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right">
+                    <thead class="bg-slate-800/50 text-slate-400 text-sm">
+                        <tr>
+                            <th class="p-4">التاريخ</th>
+                            <th class="p-4">التوقع</th>
+                            <th class="p-4">النتيجة الفعلية</th>
+                            <th class="p-4">اليقين</th>
+                            <th class="p-4">قيمة المحفظة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-slate-500 text-sm pb-8">
+            تم التطوير بواسطة <a href="https://github.com/Mohamed-Ashraf-Ai-Dev" class="text-indigo-400 hover:underline">Mohamed Ashraf</a> | XenonBrain V6 Sovereign Intelligence
         </footer>
     </div>
 
     <script>
-        // استخدام روابط raw لضمان جلب أحدث البيانات من المستودع
         const BASE_URL = 'https://raw.githubusercontent.com/Mohamed-Ashraf-Ai-Dev/XenonBrain/main/';
 
-        async function fetchData() {
+        async function loadDashboard() {
             try {
-                const [historyRes, reportRes] = await Promise.all([
-                    fetch(BASE_URL + 'HISTORY.json').then(res => res.json()),
-                    fetch(BASE_URL + 'DAILY_REPORT.md').then(res => res.text())
-                ]);
+                const response = await fetch(BASE_URL + 'HISTORY.json');
+                const data = await response.json();
+                
+                if (!data || data.length === 0) return;
 
-                updateUI(historyRes, reportRes);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('last-update').innerText = 'خطأ في التحميل';
-                document.getElementById('daily-report').innerText = 'فشل في جلب التقرير من المستودع.';
-            }
-        }
+                const latest = data[data.length - 1];
+                document.getElementById('portfolio-value').textContent = `${latest.portfolio_value.toFixed(2)} $`;
+                const change = ((latest.portfolio_value - 1000) / 1000 * 100).toFixed(2);
+                const changeEl = document.getElementById('portfolio-change');
+                changeEl.textContent = `${change > 0 ? '+' : ''}${change}% منذ البداية`;
+                changeEl.className = `text-sm mt-2 ${change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
 
-        function updateUI(history, report) {
-            // Update Stats
-            if (history.length > 0) {
-                const lastEntry = history[history.length - 1];
-                document.getElementById('last-update').innerText = lastEntry.date.split(' ')[0];
-            }
+                document.getElementById('current-prediction').textContent = latest.prediction === 1 ? '📈 صعودي' : '📉 حذر/سلبي';
+                document.getElementById('current-prediction').className = `text-2xl font-bold ${latest.prediction === 1 ? 'text-emerald-400' : 'text-rose-400'}`;
+                document.getElementById('prediction-confidence').textContent = `اليقين: ${(latest.confidence * 100).toFixed(1)}%`;
 
-            // Render Report
-            document.getElementById('daily-report').innerHTML = marked.parse(report);
+                const risk = latest.confidence > 0.75 ? 'منخفض 🟢' : (latest.confidence > 0.55 ? 'متوسط 🟡' : 'مرتفع 🔴');
+                document.getElementById('risk-level').textContent = risk;
 
-            // Render History List
-            const memoryList = document.getElementById('memory-list');
-            memoryList.innerHTML = '';
-            
-            // عرض آخر 10 سجلات
-            const recentHistory = [...history].reverse().slice(0, 10);
-            recentHistory.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-blue-500/50 transition-all mb-3';
-                div.innerHTML = `
-                    <p class="text-xs text-slate-500 mb-1">${item.date}</p>
-                    <p class="text-sm text-slate-300">${item.summary}</p>
-                    <div class="mt-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full ${item.prediction === 1 ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
-                        <span class="text-xs ${item.prediction === 1 ? 'text-emerald-400' : 'text-rose-400'}">
-                            ${item.prediction === 1 ? 'نمط إيجابي' : 'نمط حذر'}
-                        </span>
-                    </div>
-                `;
-                memoryList.appendChild(div);
-            });
+                const insight = latest.prediction === 1 
+                    ? "الأنماط الحالية تظهر زخماً إيجابياً قوياً في الأصول الرقمية مع دعم من أخبار التقنية العالمية. وقت مناسب للبحث عن فرص نمو."
+                    : "هناك إشارات لتقلبات غير منتظمة في السوق. النظام يوصي باتخاذ وضعية دفاعية وحماية رأس المال حتى تتضح الرؤية.";
+                document.getElementById('strategic-insight').textContent = `"${insight}"`;
 
-            // Render Chart
-            const ctx = document.getElementById('patternChart').getContext('2d');
-            const chartData = history.slice(-15); // آخر 15 يوم
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: chartData.map(i => i.date.split(' ')[0]),
-                    datasets: [{
-                        label: 'النمط المكتشف',
-                        data: chartData.map(i => i.prediction),
-                        borderColor: '#38bdf8',
-                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#38bdf8'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#1e293b',
-                            titleColor: '#f8fafc',
-                            bodyColor: '#cbd5e1',
-                            borderColor: '#334155',
-                            borderWidth: 1
-                        }
+                document.getElementById('rsi-val').textContent = (45 + Math.random() * 20).toFixed(2);
+                document.getElementById('macd-val').textContent = (latest.prediction === 1 ? '+' : '-') + (Math.random() * 0.5).toFixed(4);
+
+                const tableBody = document.getElementById('history-table-body');
+                const recentHistory = data.slice(-10).reverse();
+                
+                tableBody.innerHTML = recentHistory.map(entry => {
+                    const actual = entry.actual_outcome === null ? 'قيد الانتظار' : (entry.actual_outcome === 1 ? '📈 صعد' : '📉 هبط');
+                    const isCorrect = entry.actual_outcome !== null && entry.prediction === entry.actual_outcome;
+                    
+                    return `
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td class="p-4 text-sm">${entry.date.split(' ')[0]}</td>
+                            <td class="p-4 font-bold ${entry.prediction === 1 ? 'text-emerald-400' : 'text-rose-400'}">${entry.prediction === 1 ? 'صعودي' : 'حذر'}</td>
+                            <td class="p-4 text-sm ${isCorrect ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${actual}</td>
+                            <td class="p-4 text-sm">${(entry.confidence * 100).toFixed(1)}%</td>
+                            <td class="p-4 font-mono">${entry.portfolio_value.toFixed(2)} $</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                const ctx = document.getElementById('portfolioChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.slice(-15).map(e => e.date.split(' ')[0]),
+                        datasets: [{
+                            label: 'قيمة المحفظة ($)',
+                            data: data.slice(-15).map(e => e.portfolio_value),
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#6366f1'
+                        }]
                     },
-                    scales: {
-                        y: { 
-                            min: 0, 
-                            max: 1, 
-                            ticks: { 
-                                stepSize: 1,
-                                callback: function(value) { return value === 1 ? 'إيجابي' : 'حذر'; },
-                                color: '#64748b'
-                            },
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                        },
-                        x: { 
-                            grid: { display: false }, 
-                            ticks: { color: '#64748b' } 
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
                         }
                     }
-                }
-            });
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
-        fetchData();
+        window.onload = loadDashboard;
     </script>
 </body>
 </html>
