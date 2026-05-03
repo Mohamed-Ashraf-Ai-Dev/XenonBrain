@@ -28,13 +28,13 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: 📦 Force Installing Synaptic Dependencies
+    - name: 📦 Installing Sovereign Dependencies (V6)
       run: |
         python -m pip install --upgrade pip
         pip install torch numpy pandas requests feedparser yfinance sentence-transformers matplotlib pyyaml tqdm scikit-learn
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: 🧠 Executing Deep Logic Training (V5 Evolution)
+    - name: 🧠 Executing Deep Logic Training (V6 Sovereign Intelligence)
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)/src
         python src/training/train.py
@@ -50,24 +50,14 @@ jobs:
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         
-    - name: 🔔 Checking Logic Shifts
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-        python src/utils/notifier.py
-      env:
-        PYTHONPATH: src
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
     - name: 🚀 Committing Evolution & Deploying Dashboard
       run: |
-        if [ -f ALERT.txt ]; then
-          gh issue create --title "🚨 XenonBrain: Logic Shift Detected" --body-file ALERT.txt
-        fi
         git config --local user.email "action@github.com"
         git config --local user.name "XenonBrain Core"
+        # التأكد من إضافة كافة ملفات V6 المحدثة
         git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/
         git pull origin main --rebase --autostash
-        git commit -m "🧠 Evolution V5: Sentiment Core & Email Reporting [$(date +'%Y-%m-%d')]" || echo "No changes"
+        git commit -m "🧠 Evolution V6: Sovereign Intelligence, Portfolio Tracking & Strategic Insights [$(date +'%Y-%m-%d')]" || echo "No changes"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
