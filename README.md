@@ -1,103 +1,143 @@
-# XenonBrain: Advanced Logic Processing & Pattern Recognition System
+# 🧠 XenonBrain: Sovereign Intelligence Engine (V6)
+
+> **"تطور الذكاء الاصطناعي ليس مجرد حسابات، بل هو فن فهم العالم وتوقع مستقبله."**
 
 <div align="center">
+  <img src="https://img.shields.io/badge/Version-V6%20Sovereign%20Intelligence-brightgreen?style=for-the-badge&logo=github" alt="Version: V6">
   <img src="https://img.shields.io/badge/Developer-Mohamed%20Ashraf-blue?style=for-the-badge&logo=github" alt="Developer: Mohamed Ashraf">
-  <img src="https://img.shields.io/badge/AI-Transformer--based-orange?style=for-the-badge" alt="AI: Transformer-based">
+  <img src="https://img.shields.io/badge/AI-Transformer%20with%20Multi--Head%20Attention-orange?style=for-the-badge" alt="AI: Advanced Transformer">
   <img src="https://img.shields.io/badge/Status-Production--Ready-green?style=for-the-badge" alt="Status: Production-Ready">
   <img src="https://img.shields.io/badge/Automation-GitHub%20Actions-blueviolet?style=for-the-badge&logo=github-actions" alt="Automation: GitHub Actions">
+  <img src="https://img.shields.io/badge/Portfolio%20Tracking-Virtual%20Simulation-yellow?style=for-the-badge" alt="Portfolio Tracking">
 </div>
 
----
 
-## 🚀 Overview
 
-**XenonBrain** is a cutting-edge AI engine developed by **[Mohamed Ashraf](https://github.com/Mohamed-Ashraf-Ai-Dev)**. It is specifically engineered for **Advanced Logic Processing** and **Automated Pattern Recognition**. Unlike conventional models, XenonBrain bridges the gap between raw data and logical inference by integrating real-world multi-modal data streams, including Global Technology News and Financial Market Indicators.
+## 🚀 نظرة عامة
 
-The system is **100% autonomous**, utilizing a sophisticated CI/CD pipeline via GitHub Actions for continuous data ingestion, automated training, and seamless model deployment.
+**XenonBrain** هو محرك ذكاء اصطناعي سيادي متطور يعمل بشكل مستقل تماماً، يتعلم يومياً من بيانات السوق الحقيقية، ويتخذ قرارات استثمارية مدروسة بناءً على تحليل عميق للأنماط والارتباطات بين الأصول العالمية.
 
----
+النظام **مستقل تماماً** ويستخدم خط أنابيب CI/CD متطور عبر GitHub Actions لجلب البيانات المستمر والتدريب الآلي ونشر النموذج بسلاسة.
 
-## 🧠 Core Architecture
 
-Developed with a focus on high-performance logic extraction, XenonBrain utilizes a deep **Transformer-based Encoder** architecture:
 
-*   **Contextual Awareness:** Leverages `Sentence-Transformers` to translate global tech news into high-dimensional semantic embeddings, providing the "brain" with a sense of current global trends.
-*   **Pattern Recognition:** A multi-layered Transformer architecture (6 layers) processes sequences of combined textual and numerical data to identify non-linear correlations that traditional algorithms miss.
-*   **Logic Gate:** A proprietary Multi-Layer Perceptron (MLP) head that executes final logical classifications and predictive inferences.
+## 🧠 معمارية الذكاء المتقدمة (V6 Sovereign Logic)
 
----
+تم تطوير XenonBrain بتركيز على استخراج المنطق عالي الأداء باستخدام معمارية **Transformer متقدمة مع Multi-Head Attention**:
 
-## 📊 Real-World Data Integration
+*   **الوعي السياقي (Contextual Awareness):** يستخدم `Sentence-Transformers` لتحويل أخبار التقنية العالمية إلى متجهات دلالية عالية الأبعاد.
+*   **تحليل الارتباطات (Cross-Asset Correlation):** طبقات انتباه متعددة الرؤوس تفهم الارتباطات المعقدة بين الأسهم والعملات الرقمية والمؤشرات الفنية.
+*   **معالجة التسلسل الزمني:** معمارية Transformer بـ 8 طبقات تعالج البيانات الزمنية لاستخراج الأنماط الخفية.
+*   **بوابة المنطق المتقدمة:** شبكة عصبية متعددة الطبقات تحول المعلومات المعقدة إلى قرارات استثمارية واضحة.
 
-XenonBrain doesn't play with "dummy" data. It is hardwired to live, high-impact data streams:
 
-| Source Type | Provider | Description |
-| :--- | :--- | :--- |
-| **Tech Intelligence** | MIT AI, TechCrunch, The Verge | Real-time RSS feeds for global AI and tech breakthroughs. |
-| **Market Indicators** | Yahoo Finance (S&P 500) | Live financial indices used as a baseline for global economic patterns. |
-| **Temporal Context** | Sequential Windowing | Processes data in 5-step time windows to understand evolution and momentum. |
 
----
+## 📊 تكامل البيانات الحقيقية (360° Market Intelligence)
 
-## ⚙️ Fully Automated Training (The "Perpetual Brain")
+لا يستخدم XenonBrain بيانات وهمية. إنه متصل مباشرة ببيانات حقيقية عالية التأثير:
 
-The entire lifecycle of XenonBrain is governed by an automated workflow (`.github/workflows/main_training.yml`):
+| نوع المصدر | المزود | الوصف |
+| : | : | : |
+| **أخبار التقنية** | MIT AI, TechCrunch, Wired | تدفقات RSS حقيقية لأحدث التطورات التقنية والذكاء الاصطناعي. |
+| **مؤشرات السوق** | Yahoo Finance | مؤشرات مالية حية (S&P 500, Nasdaq, Bitcoin, Ethereum). |
+| **المؤشرات الفنية** | حسابات متقدمة | RSI و MACD لكل أصل لفهم الزخم والاتجاهات. |
+| **السياق الزمني** | معالجة متسلسلة | معالجة البيانات في نوافذ زمنية 5 خطوات لفهم التطور والزخم. |
+| **المحفظة الافتراضية** | محاكاة واقعية | تتبع محفظة افتراضية بدأت برأس مال 1000 دولار مع حساب الأرباح والخسائر. |
 
-1.  **Scheduled Pulse:** Runs automatically every day at 00:00 UTC.
-2.  **Environment Sync:** Auto-provisions a high-performance Python 3.11 environment.
-3.  **Data Harvesting:** Fetches the most recent 30 days of market data and the latest news headlines.
-4.  **Continuous Learning:** Retrains the core engine using the `AdamW` optimizer with `StepLR` scheduling for maximum stability.
-5.  **Auto-Deployment:** Commits and pushes the evolved `.pth` model back to the repository, ensuring the brain is always at its peak performance.
 
----
 
-## 🛠️ Quick Start
+## ⚙️ التدريب الآلي الكامل (The "Perpetual Brain")
 
-### Installation
+تحكم سير عمل آلي متطور دورة حياة XenonBrain بالكامل (`.github/workflows/main_training.yml`):
+
+1.  **النبض المجدول:** يعمل تلقائياً كل يوم في الساعة 00:00 UTC.
+2.  **مزامنة البيئة:** تجهيز بيئة Python 3.11 عالية الأداء تلقائياً.
+3.  **جلب البيانات:** جلب أحدث 60 يوماً من بيانات السوق وآخر الأخبار.
+4.  **التعلم المستمر:** إعادة تدريب المحرك الأساسي باستخدام محسّن Adam مع Gradient Clipping.
+5.  **النشر التلقائي:** رفع النموذج المطور إلى المستودع مع تقرير يومي احترافي.
+6.  **إرسال البريد الإلكتروني:** إرسال تقرير يومي احترافي إلى بريدك مع التوصيات الاستراتيجية.
+
+
+
+## 🛠️ البدء السريع
+
+### التثبيت
 ```bash
 git clone https://github.com/Mohamed-Ashraf-Ai-Dev/XenonBrain.git
 cd XenonBrain
 pip install -r requirements.txt
 ```
 
-### Manual Training
-If you wish to force a training cycle manually:
+### الإعداد الأولي
+1. أنشئ حساب Gmail جديد وفعّل "كلمة مرور التطبيقات".
+2. أضف الـ Secrets في إعدادات GitHub: `SENDER_EMAIL` و `SENDER_PASSWORD`.
+
+### التدريب اليدوي
+إذا كنت تريد فرض دورة تدريب يدوية:
 ```bash
 python src/training/train.py
 ```
 
-### Inference (Logical Prediction)
-To use the trained brain for real-time logical pattern recognition:
+### الاستدلال (التنبؤ المنطقي)
+لاستخدام الدماغ المدرب للتنبؤ بالأنماط المنطقية في الوقت الفعلي:
 ```bash
 python src/inference/predict.py
 ```
 
----
 
-## 📁 Project Structure
+
+## 📁 هيكلية المشروع
 
 ```
 XenonBrain/
-├── .github/workflows/main_training.yml  # The Automation Heart
+├── .github/workflows/main_training.yml  # قلب الأتمتة
 ├── src/
-│   ├── models/xenon_model.py            # Transformer Architecture
-│   ├── data/data_processor.py           # Real-time Data Collector
-│   ├── training/train.py                # Production Training Loop
-│   └── inference/predict.py             # Inference Engine
-├── config/config.yaml                   # System Hyperparameters
-├── requirements.txt                     # Production Dependencies
-└── README.md                            # Documentation
+│   ├── models/xenon_model.py            # معمارية Transformer (V6)
+│   ├── data/data_processor.py           # معالج البيانات والمؤشرات الفنية
+│   ├── training/train.py                # محرك التدريب والتقارير
+│   ├── inference/predict.py             # محرك الاستدلال
+│   └── utils/
+│       ├── email_notifier.py            # نظام البريد الإلكتروني
+│       ├── notifier.py                  # نظام التنبيهات
+│       └── visualizer.py                # توليد الرسوم البيانية
+├── docs/
+│   └── index.html                       # لوحة التحكم التفاعلية
+├── config/config.yaml                   # إعدادات النموذج والتدريب
+├── HISTORY.json                         # السجل التاريخي والذاكرة
+├── DAILY_REPORT.md                      # التقرير اليومي
+├── requirements.txt                     # المكتبات المطلوبة
+└── README.md                            # التوثيق
 ```
 
----
 
-## 👨‍💻 Developer
+
+## 💡 المميزات الرئيسية في V6
+
+✨ **طبقات الانتباه المتعددة:** فهم الارتباطات المعقدة بين الأصول.
+📊 **مؤشرات فنية متقدمة:** RSI و MACD لكل أصل.
+💰 **محفظة افتراضية:** تتبع الأرباح والخسائر اليومية.
+🎯 **توصيات استراتيجية:** نصائح عملية بناءً على التحليل.
+📧 **تقارير يومية:** إرسال احترافي إلى بريدك الإلكتروني.
+🌐 **لوحة تحكم تفاعلية:** عرض شامل لجميع المؤشرات.
+🧠 **تعلم ذاتي تصحيحي:** تحسين مستمر بناءً على النتائج الفعلية.
+
+
+
+## 👨‍💻 المطور
 
 **Mohamed Ashraf**
 *   **GitHub:** [Mohamed-Ashraf-Ai-Dev](https://github.com/Mohamed-Ashraf-Ai-Dev)
-*   **Role:** Lead AI Developer & Architect
+*   **البريد الإلكتروني:** mohamedashrafaidev@gmail.com
+*   **الدور:** مهندس ومطور الذكاء الاصطناعي الرئيسي
 
----
 
-## 📜 License
-This project is open-source and designed for advanced AI research and automated pattern recognition. Built with passion for the future of autonomous logic.
+
+## 📜 الترخيص
+
+هذا المشروع مفتوح المصدر وموجه للبحث المتقدم في الذكاء الاصطناعي والتعرف على الأنماط الآلي. تم بناؤه بشغف لمستقبل المنطق المستقل.
+
+
+
+**XenonBrain: حيث يلتقي الذكاء الاصطناعي بالسوق المالية العالمية.** 🚀
+
+*آخر تحديث: 2026-05-03 | الإصدار: V6 Sovereign Intelligence*
