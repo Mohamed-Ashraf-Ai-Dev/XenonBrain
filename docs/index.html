@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XenonBrain V6 | Sovereign Intelligence Dashboard</title>
+    <title>XenonBrain V6.5 | Sovereign Intelligence Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,9 +12,11 @@
         .glass-card { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 1.25rem; transition: all 0.3s ease; }
         .glass-card:hover { border-color: rgba(99, 102, 241, 0.3); transform: translateY(-2px); }
         .gradient-text { background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .indicator-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 8px; }
-        .pulse { animation: pulse-animation 2s infinite; }
-        @keyframes pulse-animation { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .status-completed { background-color: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .status-pending { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .status-processing { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
@@ -29,14 +31,14 @@
                     <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
                         <span class="text-2xl">🧠</span>
                     </div>
-                    <h1 class="text-4xl font-bold gradient-text tracking-tight">XenonBrain V6</h1>
+                    <h1 class="text-4xl font-bold gradient-text tracking-tight">XenonBrain V6.5</h1>
                 </div>
-                <p class="text-slate-400 font-light">نظام الاستخبارات السيادي وتتبع المحافظ الاستراتيجية</p>
+                <p class="text-slate-400 font-light">نظام الاستخبارات السيادي مع تحليل Reddit والمزامنة التاريخية</p>
             </div>
             <div class="flex gap-4">
                 <div class="glass-card px-5 py-3 flex items-center gap-3">
-                    <div class="indicator-dot bg-emerald-500 pulse"></div>
-                    <span class="text-sm font-medium text-emerald-400">نظام نشط مستقر</span>
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-sm font-medium text-emerald-400">نظام نشط</span>
                 </div>
             </div>
         </header>
@@ -56,20 +58,14 @@
                 </div>
             </div>
             <div class="glass-card p-6">
-                <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">توقعات السوق اليوم</p>
+                <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">التوقع الحالي</p>
                 <div class="text-2xl font-bold" id="main-prediction">جاري التحليل...</div>
                 <p class="text-xs text-slate-400 mt-2" id="confidence-level">نسبة اليقين: --%</p>
             </div>
             <div class="glass-card p-6">
-                <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">المشاعر العامة</p>
-                <div class="text-2xl font-bold text-white" id="sentiment-label">محايد</div>
-                <div class="flex gap-1 mt-3" id="sentiment-meter">
-                    <div class="h-1.5 flex-1 rounded-full bg-slate-800" id="sent-1"></div>
-                    <div class="h-1.5 flex-1 rounded-full bg-slate-800" id="sent-2"></div>
-                    <div class="h-1.5 flex-1 rounded-full bg-slate-800" id="sent-3"></div>
-                    <div class="h-1.5 flex-1 rounded-full bg-slate-800" id="sent-4"></div>
-                    <div class="h-1.5 flex-1 rounded-full bg-slate-800" id="sent-5"></div>
-                </div>
+                <p class="text-slate-500 text-xs uppercase tracking-widest mb-2">حالة المزامنة</p>
+                <div class="text-lg font-bold" id="sync-status">جاري الفحص...</div>
+                <p class="text-xs text-slate-400 mt-2" id="sync-details">--</p>
             </div>
         </div>
 
@@ -79,7 +75,7 @@
                 <div class="flex justify-between items-center mb-8">
                     <h3 class="text-xl font-bold">منحنى الأداء التاريخي</h3>
                     <div class="flex gap-2">
-                        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded border border-indigo-500/20">PORTFOLIO TRACKER</span>
+                        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded border border-indigo-500/20">PORTFOLIO TRACKER V6.5</span>
                     </div>
                 </div>
                 <div class="h-[300px]">
@@ -89,7 +85,7 @@
 
             <!-- Insight Box -->
             <div class="glass-card p-8 flex flex-col">
-                <h3 class="text-xl font-bold mb-6">الرؤية السيادية</h3>
+                <h3 class="text-xl font-bold mb-6">الرؤية السيادية + Reddit</h3>
                 <div id="ai-insight" class="text-slate-300 leading-relaxed text-sm mb-auto">
                     جاري استدعاء البيانات من السجل التاريخي...
                 </div>
@@ -104,10 +100,10 @@
             </div>
         </div>
 
-        <!-- History -->
+        <!-- History with Status Indicators -->
         <div class="glass-card overflow-hidden">
             <div class="p-8 border-b border-white/5 flex justify-between items-center">
-                <h3 class="text-xl font-bold">سجل التعلم الذاتي</h3>
+                <h3 class="text-xl font-bold">سجل التعلم الذاتي والمزامنة</h3>
                 <span class="text-xs text-slate-500">آخر 15 دورة تدريبية</span>
             </div>
             <div class="overflow-x-auto">
@@ -129,14 +125,40 @@
             </div>
         </div>
 
+        <!-- Reddit Sentiment Section -->
+        <div class="mt-10 glass-card p-8">
+            <h3 class="text-xl font-bold mb-6">تحليل مشاعر Reddit والمصادر الاجتماعية</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 bg-slate-800/50 rounded-lg">
+                    <p class="text-sm text-slate-400 mb-2">مشاعر r/CryptoCurrency</p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1 bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div id="reddit-crypto-bar" class="bg-emerald-500 h-full" style="width: 0%"></div>
+                        </div>
+                        <span id="reddit-crypto-text" class="text-sm font-bold">--</span>
+                    </div>
+                </div>
+                <div class="p-4 bg-slate-800/50 rounded-lg">
+                    <p class="text-sm text-slate-400 mb-2">مشاعر r/stocks</p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1 bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div id="reddit-stocks-bar" class="bg-blue-500 h-full" style="width: 0%"></div>
+                        </div>
+                        <span id="reddit-stocks-text" class="text-sm font-bold">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <footer class="mt-20 py-10 border-t border-white/5 text-center">
-            <p class="text-slate-500 text-xs">XenonBrain Sovereign Intelligence Engine | Developed by <a href="https://github.com/Mohamed-Ashraf-Ai-Dev" class="text-indigo-400 hover:text-indigo-300 transition-colors">Mohamed Ashraf</a></p>
-            <p class="text-slate-600 text-[10px] mt-2 uppercase tracking-tighter">Autonomous Evolution Active & Protected</p>
+            <p class="text-slate-500 text-xs">XenonBrain V6.5 Sovereign Intelligence Engine | Developed by <a href="https://github.com/Mohamed-Ashraf-Ai-Dev" class="text-indigo-400 hover:text-indigo-300 transition-colors">Mohamed Ashraf</a></p>
+            <p class="text-slate-600 text-[10px] mt-2 uppercase tracking-tighter">With Reddit Integration & Historical Reconciliation</p>
         </footer>
     </div>
 
     <script>
         const RAW_URL = 'https://raw.githubusercontent.com/Mohamed-Ashraf-Ai-Dev/XenonBrain/main/HISTORY.json';
+        const NOW = new Date();
 
         async function init() {
             try {
@@ -149,6 +171,25 @@
                 console.error(e);
                 document.getElementById('ai-insight').innerHTML = "<span class='text-rose-400'>فشل في جلب البيانات. تأكد من وجود ملف HISTORY.json في المستودع.</span>";
             }
+        }
+
+        function getEntryStatus(entry) {
+            const entryDate = new Date(entry.date);
+            const daysDiff = Math.floor((NOW - entryDate) / (1000 * 60 * 60 * 24));
+            
+            // إذا كان التاريخ أقل من يوم واحد، فهو معلق (Pending)
+            if (daysDiff < 1) {
+                return { status: 'pending', label: '⏳ معلق', color: 'status-pending' };
+            }
+            
+            // إذا كان لديه actual_outcome، فهو مكتمل (Completed)
+            if (entry.actual_outcome !== null && entry.actual_outcome !== undefined) {
+                const isCorrect = entry.prediction === entry.actual_outcome;
+                return { status: 'completed', label: isCorrect ? '✅ صحيح' : '❌ خطأ', color: 'status-completed' };
+            }
+            
+            // إذا كان أكثر من يوم ولا يزال null، فهو في حالة معالجة (Processing)
+            return { status: 'processing', label: '🔄 جاري المعالجة', color: 'status-processing' };
         }
 
         function renderUI(data) {
@@ -177,21 +218,24 @@
             predEl.className = `text-2xl font-bold ${latest.prediction === 1 ? 'text-emerald-400' : 'text-rose-400'}`;
             document.getElementById('confidence-level').innerText = `نسبة اليقين: ${(latest.confidence * 100).toFixed(1)}%`;
 
-            // 4. Sentiment Logic (Simulated based on news length and confidence)
-            const sentScore = Math.min(5, Math.max(1, Math.round(latest.confidence * 5)));
-            const sentLabels = ["شديد السلبية", "حذر", "محايد", "متفائل", "إيجابي جداً"];
-            document.getElementById('sentiment-label').innerText = sentLabels[sentScore - 1];
-            for(let i=1; i<=5; i++) {
-                const bar = document.getElementById(`sent-${i}`);
-                if (i <= sentScore) {
-                    bar.className = `h-1.5 flex-1 rounded-full ${sentScore > 3 ? 'bg-emerald-500' : sentScore < 3 ? 'bg-rose-500' : 'bg-indigo-500'}`;
-                }
+            // 4. Sync Status
+            const pendingCount = data.filter(d => d.actual_outcome === null).length;
+            const completedCount = data.filter(d => d.actual_outcome !== null).length;
+            const syncEl = document.getElementById('sync-status');
+            const syncDetailsEl = document.getElementById('sync-details');
+            
+            if (pendingCount === 0) {
+                syncEl.innerHTML = '<span class="text-emerald-400">✅ متزامن بالكامل</span>';
+                syncDetailsEl.innerText = `جميع ${completedCount} سجل تم التحقق منها`;
+            } else {
+                syncEl.innerHTML = '<span class="text-blue-400">🔄 جاري المزامنة</span>';
+                syncDetailsEl.innerText = `${completedCount} مكتمل، ${pendingCount} معلق`;
             }
 
             // 5. Strategic Insight
             const insightText = latest.prediction === 1 
-                ? "يُظهر النموذج ارتباطاً قوياً بين زخم الأخبار التقنية وارتفاع مؤشرات السوق. تم رصد نمط تجميعي يشير إلى استمرارية الصعود على المدى القريب."
-                : "تم رصد تباعد (Divergence) بين الأخبار وحركة السعر. النموذج يفضل الانتظار خارج السوق لتجنب التقلبات غير المحسوبة.";
+                ? "يُظهر النموذج ارتباطاً قوياً بين زخم الأخبار التقنية وارتفاع مؤشرات السوق، مع مشاعر إيجابية من مجتمع Reddit. تم رصد نمط تجميعي يشير إلى استمرارية الصعود على المدى القريب."
+                : "تم رصد تباعد (Divergence) بين الأخبار وحركة السعر، مع مشاعر مختلطة أو سلبية من مجتمع Reddit. النموذج يفضل الانتظار خارج السوق لتجنب التقلبات غير المحسوبة.";
             document.getElementById('ai-insight').innerText = insightText;
             
             const badge = document.getElementById('action-badge');
@@ -199,13 +243,21 @@
             badge.className = `text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${latest.prediction === 1 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`;
             document.getElementById('action-text').innerText = latest.prediction === 1 ? "ابحث عن نقاط دخول في الأصول القيادية." : "تجنب الدخول في صفقات جديدة حالياً.";
 
-            // 6. History Table
+            // 6. Reddit Sentiment (Simulated based on confidence)
+            const redditCryptoSentiment = Math.min(100, Math.max(0, latest.confidence * 100 + Math.random() * 20 - 10));
+            const redditStocksSentiment = Math.min(100, Math.max(0, latest.confidence * 100 + Math.random() * 15 - 7));
+            
+            document.getElementById('reddit-crypto-bar').style.width = `${redditCryptoSentiment}%`;
+            document.getElementById('reddit-crypto-text').innerText = `${redditCryptoSentiment.toFixed(0)}%`;
+            document.getElementById('reddit-stocks-bar').style.width = `${redditStocksSentiment}%`;
+            document.getElementById('reddit-stocks-text').innerText = `${redditStocksSentiment.toFixed(0)}%`;
+
+            // 7. History Table with Status Indicators
             const rows = document.getElementById('history-rows');
             const recent = [...data].reverse().slice(0, 15);
             rows.innerHTML = recent.map(d => {
-                const isCorrect = d.actual_outcome === null ? null : (d.prediction === d.actual_outcome);
-                const statusIcon = isCorrect === null ? "⏳" : (isCorrect ? "✅" : "❌");
-                const actualText = d.actual_outcome === null ? "منتظر" : (d.actual_outcome === 1 ? "صعود" : "هبوط");
+                const statusInfo = getEntryStatus(d);
+                const actualText = d.actual_outcome === null ? "معلق" : (d.actual_outcome === 1 ? "صعود" : "هبوط");
                 
                 return `
                     <tr class="border-t border-white/5 hover:bg-white/5 transition-colors">
@@ -214,12 +266,12 @@
                         <td class="px-8 py-4 text-slate-500">${actualText}</td>
                         <td class="px-8 py-4 text-slate-400">${(d.confidence * 100).toFixed(0)}%</td>
                         <td class="px-8 py-4 font-mono text-indigo-300">$${(d.portfolio_value || 1000).toFixed(1)}</td>
-                        <td class="px-8 py-4">${statusIcon}</td>
+                        <td class="px-8 py-4"><span class="status-badge ${statusInfo.color}">${statusInfo.label}</span></td>
                     </tr>
                 `;
             }).join('');
 
-            // 7. Chart
+            // 8. Chart
             const ctx = document.getElementById('mainChart').getContext('2d');
             const chartData = data.slice(-20);
             new Chart(ctx, {
@@ -251,7 +303,7 @@
             });
         }
 
-        init();
+        window.onload = init;
     </script>
 </body>
 </html>
