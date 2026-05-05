@@ -28,36 +28,36 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: 📦 Installing Sovereign Dependencies (V6)
+    - name: 📦 Installing Sovereign Dependencies (V6.5)
       run: |
         python -m pip install --upgrade pip
         pip install torch numpy pandas requests feedparser yfinance sentence-transformers matplotlib pyyaml tqdm scikit-learn
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: 🧠 Executing Deep Logic Training (V6 Sovereign Intelligence)
+    - name: 🧠 Executing Deep Logic Training (V6.5 Sovereign Intelligence)
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)/src
         python src/training/train.py
       env:
         PYTHONPATH: src
 
-    - name: 📧 Sending Daily Intelligence Report
+    - name: 📧 Sending Daily Intelligence Report (V6.5)
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)/src
         python src/utils/email_notifier.py
       env:
-        PYTHONPATH: src
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+        PYTHONPATH: src
         
     - name: 🚀 Committing Evolution & Deploying Dashboard
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "XenonBrain Core"
-        # التأكد من إضافة كافة ملفات V6 المحدثة
-        git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/
+        # التأكد من إضافة كافة ملفات V6.5 المحدثة
+        git add models/xenon_brain_latest.pth DAILY_REPORT.md HISTORY.json docs/ README.md src/ config/
         git pull origin main --rebase --autostash
-        git commit -m "🧠 Evolution V6: Sovereign Intelligence, Portfolio Tracking & Strategic Insights [$(date +'%Y-%m-%d')]" || echo "No changes"
+        git commit -m "🧠 Evolution V6.5: Sovereign Intelligence, Reddit Integration & Historical Reconciliation [$(date +'%Y-%m-%d')]" || echo "No changes"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
