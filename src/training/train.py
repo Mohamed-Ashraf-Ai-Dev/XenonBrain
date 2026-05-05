@@ -17,7 +17,7 @@ def train():
     
     # Load config
     with open("config/config.yaml", "r") as f:
-        t_cfg = yaml.safe_load(f)
+        t_cfg = yaml.safe_load(f)["training"]
 
     device = torch.device("cpu")
     model_path = "models/xenon_brain_latest.pth"
@@ -55,7 +55,8 @@ def train():
             total_loss += loss.item()
         
         if (epoch + 1) % 5 == 0:
-            print(f"Epoch [{epoch+1}/{t_cfg["epochs"]}], Loss: {total_loss/len(dataloader):.6f}")
+            # Fixed f-string syntax error by using single quotes for dictionary key
+            print(f"Epoch [{epoch+1}/{t_cfg['epochs']}], Loss: {total_loss/len(dataloader):.6f}")
             
     torch.save(model.state_dict(), model_path)
     print(f"تم تحديث XenonBrain V6.5 بنجاح!")
