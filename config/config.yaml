@@ -4,13 +4,12 @@ model:
   output_dim: 2
   num_layers: 8
   nhead: 8
-
 training:
   batch_size: 8
   epochs: 20
   learning_rate: 0.0003
   model_save_path: "models/xenon_brain_latest.pth"
-
+  reconciliation_lookback_days: 7 # عدد الأيام التي يجب على النظام مراجعتها لسد الثغرات التاريخية
 data:
   news_sources:
     - "https://news.mit.edu/rss/topic/artificial-intelligence2"
@@ -18,3 +17,4 @@ data:
     - "https://techcrunch.com/feed/"
   market_ticker: "^GSPC"
   sequence_length: 5
+  reddit_sentiment_weight: 0.3 # وزن مشاعر Reddit في قرار النموذج (0.0 - 1.0)
