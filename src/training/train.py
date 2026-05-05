@@ -17,29 +17,41 @@ def train():
     
     # Load config
     with open("config/config.yaml", "r") as f:
-        t_cfg = yaml.safe_load(f)["training"]
+        config = yaml.safe_load(f)
+    
+    # แยกส่วนการตั้งค่าให้ชัดเจนเพื่อป้องกัน KeyError
+    m_cfg = config["model"]
+    t_cfg = config["training"]
 
     device = torch.device("cpu")
-    model_path = "models/xenon_brain_latest.pth"
+    model_path = t_cfg["model_save_path"]
 
     collector = RealDataCollector()
     
     # Ensure history is reconciled before training or making new predictions
+    print("🔄 جاري مزامنة السجلات التاريخية وسد الثغرات...")
     collector.reconcile_history()
 
     X, y, latest_news_summary = collector.prepare_data()
     dataloader = DataLoader(XenonDataset(X, y), batch_size=t_cfg["batch_size"], shuffle=True)
 
-    model = XenonModel(input_dim=X.shape[-1], hidden_dim=t_cfg["hidden_dim"], output_dim=t_cfg["output_dim"], num_heads=t_cfg["num_heads"], num_layers=t_cfg["num_layers"]).to(device)
+    # استخدام m_cfg للنموذج و t_cfg للتدريب
+    model = XenonModel(
+        input_dim=X.shape[-1], 
+        hidden_dim=m_cfg["hidden_dim"], 
+        output_dim=m_cfg["output_dim"], 
+        num_heads=m_cfg["nhead"], # nhead في config يقابل num_heads في الموديل
+        num_layers=m_cfg["num_layers"]
+    ).to(device)
 
     if os.path.exists(model_path):
-        print("تم تحميل النسخة السابقة لمواصلة التطور الذاتي...")
+        print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5...")
         model.load_state_dict(torch.load(model_path, map_location=device))
 
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=t_cfg["learning_rate"])
 
-    print("بدء دورة التدريب على البيانات الحقيقية والمصححة...")
+    print("🚀 بدء دورة التدريب V6.5 على البيانات الحقيقية والمصححة...")
     model.train()
     for epoch in range(t_cfg["epochs"]):
         total_loss = 0
@@ -55,14 +67,13 @@ def train():
             total_loss += loss.item()
         
         if (epoch + 1) % 5 == 0:
-            # Fixed f-string syntax error by using single quotes for dictionary key
             print(f"Epoch [{epoch+1}/{t_cfg['epochs']}], Loss: {total_loss/len(dataloader):.6f}")
             
     torch.save(model.state_dict(), model_path)
-    print(f"تم تحديث XenonBrain V6.5 بنجاح!")
-    generate_daily_report(model, device, collector, latest_news_summary)
+    print(f"✅ تم تحديث XenonBrain V6.5 بنجاح!")
+    generate_daily_report(model, device, collector, latest_news_summary, config)
 
-def generate_daily_report(model, device, collector, latest_news_summary):
+def generate_daily_report(model, device, collector, latest_news_summary, config):
     # جلب أحدث البيانات للتنبؤ الحالي
     X, _, _ = collector.prepare_data()
     
