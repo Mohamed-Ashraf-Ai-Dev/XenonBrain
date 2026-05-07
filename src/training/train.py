@@ -40,7 +40,7 @@ def train():
         input_dim=X.shape[-1], 
         hidden_dim=m_cfg["hidden_dim"], 
         output_dim=m_cfg["output_dim"], 
-        num_heads=m_cfg["nhead"], # nhead في config يقابل num_heads في الموديل
+        nhead=m_cfg["nhead"], # nhead في config يقابل nhead في الموديل
         num_layers=m_cfg["num_layers"]
     ).to(device)
 
