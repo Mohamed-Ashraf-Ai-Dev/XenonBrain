@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 class XenonDataset(Dataset):
     def __init__(self, data, targets):
         self.data = torch.FloatTensor(data)
-        self.targets = torch.FloatTensor(targets)
+        self.targets = torch.LongTensor(targets) if targets.ndim == 1 else torch.FloatTensor(targets)
 
     def __len__(self):
         return len(self.data)
@@ -223,6 +223,5 @@ class RealDataCollector:
 def get_dataloader(batch_size=8):
     collector = RealDataCollector()
     X, y, _ = collector.prepare_data()
-    y_one_hot = np.eye(2)[y]
-    dataset = XenonDataset(X, y_one_hot)
+    dataset = XenonDataset(X, y)
     return DataLoader(dataset, batch_size=batch_size, shuffle=True)

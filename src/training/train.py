@@ -58,7 +58,7 @@ def train():
         for batch_X, batch_y in dataloader:
             optimizer.zero_grad()
             outputs = model(batch_X.to(device))
-            loss = criterion(outputs, batch_y.to(device))
+            loss = criterion(outputs, batch_y.to(device).long())
             loss.backward()
             
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
