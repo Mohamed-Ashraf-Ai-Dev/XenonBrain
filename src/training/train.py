@@ -48,7 +48,7 @@ def train():
         print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5...")
         model.load_state_dict(torch.load(model_path, map_location=device))
 
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=t_cfg["learning_rate"])
 
     print("🚀 بدء دورة التدريب V6.5 على البيانات الحقيقية والمصححة...")
@@ -81,10 +81,10 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
     with torch.no_grad():
         input_tensor = torch.FloatTensor(X[-1:]).to(device)
         output = model(input_tensor)
-        output = torch.clamp(output, min=0.0, max=1.0)
+        probabilities = torch.softmax(output, dim=1)
         
-        prediction = torch.argmax(output, dim=1).item()
-        confidence = torch.max(output).item()
+        prediction = torch.argmax(probabilities, dim=1).item()
+        confidence = torch.max(probabilities).item()
 
     # حساب قيمة المحفظة الافتراضية بناءً على التوقع الجديد
     previous_portfolio_value = 1000.0

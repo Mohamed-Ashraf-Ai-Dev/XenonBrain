@@ -37,8 +37,7 @@ class XenonModel(nn.Module):
             nn.Dropout(0.2),
             nn.Linear(hidden_dim * 2, hidden_dim),
             nn.GELU(),
-            nn.Linear(hidden_dim, output_dim),
-            nn.Sigmoid()
+            nn.Linear(hidden_dim, output_dim)
         )
 
     def forward(self, x):
