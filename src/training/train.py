@@ -13,13 +13,12 @@ from data.data_processor import RealDataCollector, XenonDataset
 from models.xenon_model import XenonModel
 
 def train():
-    print("XenonBrain V6.5 Training on: cpu")
+    print("XenonBrain V6.5.1 Training on: cpu")
     
     # Load config
     with open("config/config.yaml", "r") as f:
         config = yaml.safe_load(f)
     
-    # แยกส่วนการตั้งค่าให้ชัดเจนเพื่อป้องกัน KeyError
     m_cfg = config["model"]
     t_cfg = config["training"]
 
@@ -27,42 +26,41 @@ def train():
     model_path = t_cfg["model_save_path"]
 
     collector = RealDataCollector()
-    
-    # Ensure history is reconciled before training or making new predictions
     print("🔄 جاري مزامنة السجلات التاريخية وسد الثغرات...")
     collector.reconcile_history()
 
     X, y, latest_news_summary = collector.prepare_data()
-    dataloader = DataLoader(XenonDataset(X, y), batch_size=t_cfg["batch_size"], shuffle=True)
+    dataset = XenonDataset(X, y)
+    dataloader = DataLoader(dataset, batch_size=t_cfg["batch_size"], shuffle=True)
 
-    # استخدام m_cfg للنموذج و t_cfg للتدريب
     model = XenonModel(
         input_dim=X.shape[-1], 
         hidden_dim=m_cfg["hidden_dim"], 
         output_dim=m_cfg["output_dim"], 
-        nhead=m_cfg["nhead"], # nhead في config يقابل nhead في الموديل
+        num_heads=m_cfg["nhead"],
         num_layers=m_cfg["num_layers"]
     ).to(device)
 
     if os.path.exists(model_path):
-        print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5...")
-        model.load_state_dict(torch.load(model_path, map_location=device))
+        try:
+            print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5.1...")
+            model.load_state_dict(torch.load(model_path, map_location=device))
+        except:
+            print("⚠️ تعذر تحميل النموذج القديم بسبب اختلاف المعمارية، سيتم البدء من جديد.")
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=t_cfg["learning_rate"])
 
-    print("🚀 بدء دورة التدريب V6.5 على البيانات الحقيقية والمصححة...")
+    print("🚀 بدء دورة التدريب V6.5.1 على البيانات الحقيقية والمصححة...")
     model.train()
     for epoch in range(t_cfg["epochs"]):
         total_loss = 0
         for batch_X, batch_y in dataloader:
             optimizer.zero_grad()
             outputs = model(batch_X.to(device))
-            loss = criterion(outputs, batch_y.to(device).long())
+            loss = criterion(outputs, batch_y.to(device))
             loss.backward()
-            
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            
             optimizer.step()
             total_loss += loss.item()
         
@@ -70,11 +68,10 @@ def train():
             print(f"Epoch [{epoch+1}/{t_cfg['epochs']}], Loss: {total_loss/len(dataloader):.6f}")
             
     torch.save(model.state_dict(), model_path)
-    print(f"✅ تم تحديث XenonBrain V6.5 بنجاح!")
+    print(f"✅ تم تحديث XenonBrain V6.5.1 بنجاح!")
     generate_daily_report(model, device, collector, latest_news_summary, config)
 
 def generate_daily_report(model, device, collector, latest_news_summary, config):
-    # جلب أحدث البيانات للتنبؤ الحالي
     X, _, _ = collector.prepare_data()
     
     model.eval()
@@ -82,11 +79,9 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
         input_tensor = torch.FloatTensor(X[-1:]).to(device)
         output = model(input_tensor)
         probabilities = torch.softmax(output, dim=1)
-        
         prediction = torch.argmax(probabilities, dim=1).item()
         confidence = torch.max(probabilities).item()
 
-    # حساب قيمة المحفظة الافتراضية بناءً على التوقع الجديد
     previous_portfolio_value = 1000.0
     if os.path.exists(collector.history_file):
         try:
@@ -98,29 +93,24 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
     
     current_portfolio_value = previous_portfolio_value
     if prediction == 1:
-        current_portfolio_value *= 1.005 # 0.5% gain for positive prediction
+        current_portfolio_value *= 1.005
     else:
-        current_portfolio_value *= 0.998 # 0.2% loss for cautious prediction
+        current_portfolio_value *= 0.998
 
-    # actual_outcome for the current day's prediction will be null, reconciled next run
     collector.update_history(latest_news_summary, prediction, confidence, actual_outcome=None, portfolio_value=current_portfolio_value)
     
     date_str = datetime.datetime.now().strftime("%Y/%m/%d")
     status = "📈 صعودي (Positive)" if prediction == 1 else "📉 حذر/سلبي (Negative)"
     risk = "منخفض 🟢" if confidence > 0.75 else "متوسط 🟡" if confidence > 0.55 else "مرتفع 🔴"
     
-    strategic_recommendation = ""
-    if prediction == 1:
-        strategic_recommendation = "يوصي XenonBrain بالبحث عن فرص استثمارية في الأصول ذات الزخم الإيجابي، مع التركيز على القطاعات التي تظهر نمواً قوياً في الأخبار التقنية والمالية، بالإضافة إلى مشاعر مجتمع Reddit الإيجابية."
-    else:
-        strategic_recommendation = "ينصح XenonBrain بتوخي الحذر وتقليل المخاطر، مع مراقبة دقيقة للأسواق والبحث عن أصول دفاعية أو فرص للتحوط ضد التقلبات، خاصة مع مشاعر مجتمع Reddit المختلطة أو السلبية."
+    strategic_recommendation = "يوصي XenonBrain بالبحث عن فرص استثمارية في الأصول ذات الزخم الإيجابي..." if prediction == 1 else "ينصح XenonBrain بتوخي الحذر وتقليل المخاطر..."
 
-    report_content = f"""🧠 تقرير XenonBrain للذكاء الاصطناعي (V6.5 Sovereign Intelligence) | بتاريخ: {date_str}
+    report_content = f"""🧠 تقرير XenonBrain للذكاء الاصطناعي (V6.5.1 Sovereign Intelligence) | بتاريخ: {date_str}
 
-🌍 تحليل المشهد الشامل (V6.5 Global & Reddit Insights)
-> "تم دمج بيانات من مصادر عالمية تشمل أخبار التقنية، مؤشرات S&P 500 وNasdaq، مع تحليل معمق للعملات الرقمية (Bitcoin, Ethereum) والمؤشرات الفنية المتقدمة (RSI, MACD). تم إضافة تحليل لمشاعر مجتمع Reddit لتعزيز فهم الأنماط والارتباطات العابرة للأصول."
+🌍 تحليل المشهد الشامل (V6.5.1 Global & Reddit Insights)
+> "تم دمج بيانات من مصادر عالمية مع تحليل لمشاعر مجتمع Reddit لتعزيز فهم الأنماط والارتباطات العابرة للأصول."
 
-📊 تحليل الأنماط المنطقية (V6.5 Deep Logic)
+📊 تحليل الأنماط المنطقية (V6.5.1 Deep Logic)
 | المعيار | الحالة | التقييم المنطقي |
 | :--- | :--- | :--- |
 | **اتجاه السوق العالمي** | {status} | تحليل تقاطع الأسهم والعملات الرقمية والمؤشرات الفنية |
@@ -134,14 +124,14 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
 | **التغير اليومي** | {((current_portfolio_value - previous_portfolio_value) / previous_portfolio_value * 100):.2f}% |
 
 💡 رؤية XenonBrain (The Sovereign Insight)
-*بناءً على الأنماط المكتشفة، النظام يرى أن الحالة الحالية تشير إلى {'زخم إيجابي ملحوظ في الأصول الرقمية والتقنية، مدعوماً بمشاعر إيجابية من مجتمع Reddit.' if prediction == 1 else 'ضرورة توخي الحذر الشديد بسبب تقلبات غير منتظمة في البيانات الحالية، مع مشاعر مختلطة أو سلبية من مجتمع Reddit.'}. تم دمج هذه التجربة في الذاكرة التصحيحية V6.5 لتحسين الاستنتاجات القادمة.*
+*بناءً على الأنماط المكتشفة، النظام يرى أن الحالة الحالية تشير إلى {'زخم إيجابي ملحوظ.' if prediction == 1 else 'ضرورة توخي الحذر.'} تم دمج هذه التجربة في الذاكرة التصحيحية V6.5.1 لتحسين الاستنتاجات القادمة.*
 
 **🚀 توصية XenonBrain الاستراتيجية اليوم:**
 {strategic_recommendation}
 
 ---
 المطور الرئيسي: [Mohamed Ashraf](https://github.com/Mohamed-Ashraf-Ai-Dev)
-حالة النظام: متصل وشغال (Active & Evolving V6.5)
+حالة النظام: متصل وشغال (Active & Evolving V6.5.1)
 """
     with open("DAILY_REPORT.md", "w", encoding="utf-8") as f:
         f.write(report_content)
@@ -151,10 +141,6 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
         send_email_report(report_content)
     except Exception as e:
         print(f"فشل إرسال البريد الإلكتروني: {e}")
-    try:
-        from utils.visualizer import generate_visuals
-        generate_visuals()
-    except: pass
 
 if __name__ == "__main__":
     train()

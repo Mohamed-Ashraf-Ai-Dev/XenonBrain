@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 class XenonDataset(Dataset):
     def __init__(self, data, targets):
         self.data = torch.FloatTensor(data)
-        self.targets = torch.LongTensor(targets) if targets.ndim == 1 else torch.FloatTensor(targets)
+        self.targets = torch.LongTensor(targets)
 
     def __len__(self):
         return len(self.data)
@@ -24,7 +24,7 @@ class XenonDataset(Dataset):
 
 class RealDataCollector:
     """
-    محرك XenonBrain المطور (V6.5 Sovereign Intelligence):
+    محرك XenonBrain المطور (V6.5.1 Sovereign Intelligence):
     1. تحليل المشاعر وتقسيم البيانات (Logic Partitioning).
     2. الذاكرة التصحيحية بناءً على أداء السوق الحقيقي وسد الثغرات التاريخية.
     3. دمج بيانات Reddit العامة (Public Subreddits) لتحليل مشاعر المجتمع.
@@ -34,11 +34,10 @@ class RealDataCollector:
         self.raw_data_path = raw_data_path
         self.history_file = "HISTORY.json"
         os.makedirs(raw_data_path, exist_ok=True)
-        # استخدام نموذج خفيف لتحليل المشاعر وتحويل النصوص
         self.text_model = SentenceTransformer('all-MiniLM-L6-v2')
 
     def fetch_all_sources(self):
-        print("جاري جلب البيانات من المصادر العالمية المتعددة و Reddit (V6.5)...")
+        print("جاري جلب البيانات من المصادر العالمية المتعددة و Reddit (V6.5.1)...")
         sources = {
             "tech": [
                 "https://news.mit.edu/rss/topic/artificial-intelligence2",
@@ -56,12 +55,11 @@ class RealDataCollector:
         }
         
         all_news = {"tech": [], "finance": [], "reddit": []}
-        headers = {'User-Agent': 'Mozilla/5.0 (XenonBrain/6.5)'}
+        headers = {'User-Agent': 'Mozilla/5.0 (XenonBrain/6.5.1)'}
         
         for category, urls in sources.items():
             for url in urls:
                 try:
-                    # استخدام requests مع headers لتجنب حظر Reddit
                     response = requests.get(url, headers=headers, timeout=10)
                     feed = feedparser.parse(response.content)
                     for entry in feed.entries[:5]:
@@ -71,7 +69,6 @@ class RealDataCollector:
         return all_news
 
     def calculate_indicators(self, df):
-        """حساب المؤشرات الفنية المتقدمة"""
         delta = df['Close'].diff()
         gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
         loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
@@ -98,7 +95,6 @@ class RealDataCollector:
         return market_data
 
     def reconcile_history(self):
-        """سد الثغرات التاريخية: التحقق من نتائج التوقعات القديمة التي لا تزال 'null'"""
         if not os.path.exists(self.history_file): return
         
         try:
@@ -106,24 +102,22 @@ class RealDataCollector:
                 history = json.load(f)
             
             modified = False
-            # جلب بيانات S&P 500 لآخر 7 أيام للتحقق
             sp500 = yf.download("^GSPC", period="7d", interval="1d", progress=False)
             
             for entry in history:
                 if entry.get("actual_outcome") is None:
-                    entry_date = datetime.strptime(entry["date"], "%Y-%m-%d %H:%M:%S").date()
-                    # إذا كان التاريخ قبل اليوم، نحاول معرفة ما حدث
-                    if entry_date < datetime.now().date():
-                        next_day = entry_date + timedelta(days=1)
-                        if next_day in sp500.index.date:
-                            # إذا كان سعر الإغلاق في اليوم التالي أعلى من يوم التوقع -> صعود (1)
-                            # نستخدم منطق مبسط للتحقق
-                            change = sp500.loc[sp500.index.date == next_day, 'Close'].values[0] - \
-                                     sp500.loc[sp500.index.date == entry_date, 'Close'].values[0] if entry_date in sp500.index.date else 0
-                            
-                            entry["actual_outcome"] = 1 if change > 0 else 0
-                            modified = True
-                            print(f"✅ تم تحديث نتيجة يوم {entry_date}: {'صعود' if entry['actual_outcome']==1 else 'هبوط'}")
+                    try:
+                        entry_date = datetime.strptime(entry["date"], "%Y-%m-%d %H:%M:%S").date()
+                        if entry_date < datetime.now().date():
+                            next_day = entry_date + timedelta(days=1)
+                            if next_day in sp500.index.date:
+                                change = sp500.loc[sp500.index.date == next_day, 'Close'].values[0] - \
+                                         sp500.loc[sp500.index.date == entry_date, 'Close'].values[0] if entry_date in sp500.index.date else 0
+                                
+                                entry["actual_outcome"] = 1 if change > 0 else 0
+                                modified = True
+                                print(f"✅ تم تحديث نتيجة يوم {entry_date}: {'صعود' if entry['actual_outcome']==1 else 'هبوط'}")
+                    except: continue
 
             if modified:
                 with open(self.history_file, 'w', encoding='utf-8') as f:
@@ -132,9 +126,6 @@ class RealDataCollector:
             print(f"⚠️ خطأ أثناء تحديث السجلات التاريخية: {e}")
 
     def update_history(self, news_summary, prediction, confidence=0.5, actual_outcome=None, portfolio_value=1000):
-        """تحديث سجل الذاكرة التاريخية مع دعم المحفظة الافتراضية V6.5"""
-        self.reconcile_history() # تشغيل المصالحة قبل الإضافة الجديدة
-        
         history = []
         if os.path.exists(self.history_file):
             try:
@@ -142,35 +133,23 @@ class RealDataCollector:
                     history = json.load(f)
             except: pass
         
-        # تجنب إضافة سجل مكرر لنفس اليوم إذا كان الفارق الزمني بسيطاً
+        new_entry = {
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "summary": str(news_summary)[:150],
+            "prediction": int(prediction),
+            "confidence": float(confidence),
+            "actual_outcome": int(actual_outcome) if actual_outcome is not None else None,
+            "portfolio_value": float(portfolio_value)
+        }
+        
         if history:
             last_date = datetime.strptime(history[-1]["date"], "%Y-%m-%d %H:%M:%S")
-            if (datetime.now() - last_date).total_seconds() < 3600: # أقل من ساعة
-                print("⚠️ تم رصد محاولة إضافة سجل مكرر في وقت قصير، سيتم التحديث بدلاً من الإضافة.")
-                history[-1].update({
-                    "summary": str(news_summary)[:150],
-                    "prediction": int(prediction),
-                    "confidence": float(confidence),
-                    "portfolio_value": float(portfolio_value)
-                })
+            if (datetime.now() - last_date).total_seconds() < 3600:
+                history[-1].update(new_entry)
             else:
-                history.append({
-                    "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "summary": str(news_summary)[:150],
-                    "prediction": int(prediction),
-                    "confidence": float(confidence),
-                    "actual_outcome": int(actual_outcome) if actual_outcome is not None else None,
-                    "portfolio_value": float(portfolio_value)
-                })
+                history.append(new_entry)
         else:
-            history.append({
-                "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "summary": str(news_summary)[:150],
-                "prediction": int(prediction),
-                "confidence": float(confidence),
-                "actual_outcome": int(actual_outcome) if actual_outcome is not None else None,
-                "portfolio_value": float(portfolio_value)
-            })
+            history.append(new_entry)
         
         history = history[-100:] 
         with open(self.history_file, 'w', encoding='utf-8') as f:
@@ -180,7 +159,6 @@ class RealDataCollector:
         news = self.fetch_all_sources()
         markets = self.fetch_market_indicators()
         
-        # دمج مشاعر Reddit مع الأخبار
         tech_emb = np.mean(self.text_model.encode(news['tech']), axis=0) if news['tech'] else np.zeros(384)
         fin_emb = np.mean(self.text_model.encode(news['finance']), axis=0) if news['finance'] else np.zeros(384)
         reddit_emb = np.mean(self.text_model.encode(news['reddit']), axis=0) if news['reddit'] else np.zeros(384)
@@ -219,9 +197,3 @@ class RealDataCollector:
             
         summary = news['reddit'][0] if news['reddit'] else (news['tech'][0] if news['tech'] else "Global Market Sync")
         return np.array(X), np.array(y), summary
-
-def get_dataloader(batch_size=8):
-    collector = RealDataCollector()
-    X, y, _ = collector.prepare_data()
-    dataset = XenonDataset(X, y)
-    return DataLoader(dataset, batch_size=batch_size, shuffle=True)
