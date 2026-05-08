@@ -24,7 +24,7 @@ class XenonDataset(Dataset):
 
 class RealDataCollector:
     """
-    محرك XenonBrain المطور (V6.5.1 Sovereign Intelligence):
+    محرك XenonBrain المطور (V6.5 Sovereign Intelligence):
     1. تحليل المشاعر وتقسيم البيانات (Logic Partitioning).
     2. الذاكرة التصحيحية بناءً على أداء السوق الحقيقي وسد الثغرات التاريخية.
     3. دمج بيانات Reddit العامة (Public Subreddits) لتحليل مشاعر المجتمع.
@@ -37,7 +37,7 @@ class RealDataCollector:
         self.text_model = SentenceTransformer('all-MiniLM-L6-v2')
 
     def fetch_all_sources(self):
-        print("جاري جلب البيانات من المصادر العالمية المتعددة و Reddit (V6.5.1)...")
+        print("جاري جلب البيانات من المصادر العالمية المتعددة و Reddit (V6.5)...")
         sources = {
             "tech": [
                 "https://news.mit.edu/rss/topic/artificial-intelligence2",
@@ -55,7 +55,7 @@ class RealDataCollector:
         }
         
         all_news = {"tech": [], "finance": [], "reddit": []}
-        headers = {'User-Agent': 'Mozilla/5.0 (XenonBrain/6.5.1)'}
+        headers = {'User-Agent': 'Mozilla/5.0 (XenonBrain/6.5)'}
         
         for category, urls in sources.items():
             for url in urls:

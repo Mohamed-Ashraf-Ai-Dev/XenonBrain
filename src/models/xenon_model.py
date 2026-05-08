@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 class XenonModel(nn.Module):
     """
-    XenonBrain Sovereign Intelligence Engine (V6.5.1):
+    XenonBrain Sovereign Intelligence Engine (V6.5):
     تمت ترقية النموذج بإضافة طبقات انتباه متعددة الرؤوس (Multi-Head Attention) لفهم الارتباطات المعقدة بين الأصول،
     وتعميق بوابة المنطق لاتخاذ قرارات أكثر سيادية. يدعم الآن التعلم المحسن من الأخطاء التاريخية
     ومشاعر مجتمع Reddit المدمجة في بيانات التدريب.
@@ -57,5 +57,5 @@ if __name__ == "__main__":
     model = XenonModel(input_dim=390, hidden_dim=128, output_dim=2)
     sample_input = torch.randn(8, 5, 390) 
     output = model(sample_input)
-    print(f"XenonBrain Model V6.5.1 (Sovereign Intelligence) Initialized.")
+    print(f"XenonBrain Model V6.5 (Sovereign Intelligence) Initialized.")
     print(f"Input: {sample_input.shape} -> Output: {output.shape}")

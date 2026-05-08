@@ -13,7 +13,7 @@ from data.data_processor import RealDataCollector, XenonDataset
 from models.xenon_model import XenonModel
 
 def train():
-    print("XenonBrain V6.5.1 Training on: cpu")
+    print("XenonBrain V6.5 Training on: cpu")
     
     # Load config
     with open("config/config.yaml", "r") as f:
@@ -43,7 +43,7 @@ def train():
 
     if os.path.exists(model_path):
         try:
-            print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5.1...")
+            print("✅ تم تحميل النسخة السابقة لمواصلة التطور الذاتي V6.5...")
             model.load_state_dict(torch.load(model_path, map_location=device))
         except:
             print("⚠️ تعذر تحميل النموذج القديم بسبب اختلاف المعمارية، سيتم البدء من جديد.")
@@ -51,7 +51,7 @@ def train():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=t_cfg["learning_rate"])
 
-    print("🚀 بدء دورة التدريب V6.5.1 على البيانات الحقيقية والمصححة...")
+    print("🚀 بدء دورة التدريب V6.5 على البيانات الحقيقية والمصححة...")
     model.train()
     for epoch in range(t_cfg["epochs"]):
         total_loss = 0
@@ -68,7 +68,7 @@ def train():
             print(f"Epoch [{epoch+1}/{t_cfg['epochs']}], Loss: {total_loss/len(dataloader):.6f}")
             
     torch.save(model.state_dict(), model_path)
-    print(f"✅ تم تحديث XenonBrain V6.5.1 بنجاح!")
+    print(f"✅ تم تحديث XenonBrain V6.5 بنجاح!")
     generate_daily_report(model, device, collector, latest_news_summary, config)
 
 def generate_daily_report(model, device, collector, latest_news_summary, config):
@@ -105,12 +105,12 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
     
     strategic_recommendation = "يوصي XenonBrain بالبحث عن فرص استثمارية في الأصول ذات الزخم الإيجابي..." if prediction == 1 else "ينصح XenonBrain بتوخي الحذر وتقليل المخاطر..."
 
-    report_content = f"""🧠 تقرير XenonBrain للذكاء الاصطناعي (V6.5.1 Sovereign Intelligence) | بتاريخ: {date_str}
+    report_content = f"""🧠 تقرير XenonBrain للذكاء الاصطناعي (V6.5 Sovereign Intelligence) | بتاريخ: {date_str}
 
-🌍 تحليل المشهد الشامل (V6.5.1 Global & Reddit Insights)
+🌍 تحليل المشهد الشامل (V6.5 Global & Reddit Insights)
 > "تم دمج بيانات من مصادر عالمية مع تحليل لمشاعر مجتمع Reddit لتعزيز فهم الأنماط والارتباطات العابرة للأصول."
 
-📊 تحليل الأنماط المنطقية (V6.5.1 Deep Logic)
+📊 تحليل الأنماط المنطقية (V6.5 Deep Logic)
 | المعيار | الحالة | التقييم المنطقي |
 | :--- | :--- | :--- |
 | **اتجاه السوق العالمي** | {status} | تحليل تقاطع الأسهم والعملات الرقمية والمؤشرات الفنية |
@@ -124,14 +124,14 @@ def generate_daily_report(model, device, collector, latest_news_summary, config)
 | **التغير اليومي** | {((current_portfolio_value - previous_portfolio_value) / previous_portfolio_value * 100):.2f}% |
 
 💡 رؤية XenonBrain (The Sovereign Insight)
-*بناءً على الأنماط المكتشفة، النظام يرى أن الحالة الحالية تشير إلى {'زخم إيجابي ملحوظ.' if prediction == 1 else 'ضرورة توخي الحذر.'} تم دمج هذه التجربة في الذاكرة التصحيحية V6.5.1 لتحسين الاستنتاجات القادمة.*
+*بناءً على الأنماط المكتشفة، النظام يرى أن الحالة الحالية تشير إلى {'زخم إيجابي ملحوظ.' if prediction == 1 else 'ضرورة توخي الحذر.'} تم دمج هذه التجربة في الذاكرة التصحيحية V6.5 لتحسين الاستنتاجات القادمة.*
 
 **🚀 توصية XenonBrain الاستراتيجية اليوم:**
 {strategic_recommendation}
 
 ---
 المطور الرئيسي: [Mohamed Ashraf](https://github.com/Mohamed-Ashraf-Ai-Dev)
-حالة النظام: متصل وشغال (Active & Evolving V6.5.1)
+حالة النظام: متصل وشغال (Active & Evolving V6.5)
 """
     with open("DAILY_REPORT.md", "w", encoding="utf-8") as f:
         f.write(report_content)
