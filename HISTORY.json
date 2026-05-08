@@ -2,32 +2,38 @@
     {
         "date": "2026-04-30 10:36:40",
         "summary": "Auto-generated summary from training session...",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-04-30 11:02:15",
         "summary": "Auto-generated summary from training session...",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-04-30 19:54:36",
         "summary": "Auto-generated summary from training session...",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-04-30 22:21:49",
         "summary": "Auto-generated summary from training session",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-04-30 22:33:02",
         "summary": "Auto-generated summary from training session",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-04-30 22:46:54",
         "summary": "Auto-generated summary from training session",
-        "prediction": 1
+        "prediction": 1,
+        "actual_outcome": 1
     },
     {
         "date": "2026-05-01 03:59:04",
@@ -53,14 +59,14 @@
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 1,
         "confidence": 0.6615901589393616,
-        "actual_outcome": null
+        "actual_outcome": 0
     },
     {
         "date": "2026-05-03 09:45:23",
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 0,
         "confidence": 0.5320174098014832,
-        "actual_outcome": null,
+        "actual_outcome": 0,
         "portfolio_value": 998.0
     },
     {
@@ -68,7 +74,7 @@
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 1,
         "confidence": 0.6875278353691101,
-        "actual_outcome": null,
+        "actual_outcome": 0,
         "portfolio_value": 1002.9899999999999
     },
     {
@@ -76,7 +82,7 @@
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 1,
         "confidence": 0.7422406077384949,
-        "actual_outcome": null,
+        "actual_outcome": 0,
         "portfolio_value": 1008.0049499999998
     },
     {
@@ -84,7 +90,7 @@
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 1,
         "confidence": 0.6566777229309082,
-        "actual_outcome": null,
+        "actual_outcome": 1,
         "portfolio_value": 1013.0449747499997
     },
     {
@@ -92,7 +98,15 @@
         "summary": "Beacon Biosignals is mapping the brain during sleep Founded by Jake Donoghue PhD ’19 and former MIT researcher Jarrett Revels, the company is creating",
         "prediction": 0,
         "confidence": 0.5150416493415833,
-        "actual_outcome": null,
+        "actual_outcome": 1,
         "portfolio_value": 1011.0188848004997
+    },
+    {
+        "date": "2026-05-08 11:28:30",
+        "summary": "Daily Crypto Discussion - May 7, 2026 (GMT+0) Welcome to the Daily Crypto Discussion thread. Please read the disclaimer and rules before participating",
+        "prediction": 1,
+        "confidence": 0.5988911390304565,
+        "actual_outcome": null,
+        "portfolio_value": 1016.0739792245021
     }
 ]
