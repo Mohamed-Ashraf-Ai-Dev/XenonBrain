@@ -1,7 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
 import os
 import datetime
 import json
@@ -31,7 +30,7 @@ def send_email_report(report_content=None):
         try:
             with open("HISTORY.json", "r", encoding="utf-8") as f:
                 history_data = json.load(f)
-        except json.JSONDecodeError:
+        except:
             print("تحذير: فشل في قراءة HISTORY.json، قد يكون فارغاً أو تالفاً.")
             history_data = []
 
@@ -50,19 +49,23 @@ def send_email_report(report_content=None):
     chart_html = ""
     chart_path = "docs/assets/pattern_history.png"
     if os.path.exists(chart_path):
-        with open(chart_path, "rb") as img_file:
-            img_data = img_file.read()
-            encoded_img = base64.b64encode(img_data).decode("utf-8")
-            chart_html = f"""
-            <h3 style="color: #60a5fa; text-align: right;">📈 منحنى الأداء التاريخي</h3>
-            <img src="data:image/png;base64,{encoded_img}" alt="Historical Performance Chart" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 10px auto;">
-            <br>
-            """
+        try:
+            with open(chart_path, "rb") as img_file:
+                img_data = img_file.read()
+                encoded_img = base64.b64encode(img_data).decode("utf-8")
+                chart_html = f"""
+                <h3 style="color: #60a5fa; text-align: right;">📈 منحنى الأداء التاريخي</h3>
+                <img src="data:image/png;base64,{encoded_img}" alt="Historical Performance Chart" style="width: 100%; max-width: 600px; height: auto; display: block; margin: 10px auto;">
+                <br>
+                """
+        except: pass
 
     # Construct the full HTML email
+    growth_color = "#22c55e" if portfolio_growth_percentage >= 0 else "#ef4444"
+    
     html_content = f"""
     <html>
-    <body style="font-family: 'Tajawal', Arial, sans-serif; line-height: 1.6; color: #333; direction: rtl; text-align: right; background-color: #f4f7f6;">
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; direction: rtl; text-align: right; background-color: #f4f7f6;">
         <div style="max-width: 700px; margin: 20px auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
             <div style="background: linear-gradient(135deg, #60a5fa, #a78bfa); color: white; padding: 30px; text-align: center;">
                 <h1 style="margin: 0; font-size: 28px;">🧠 XenonBrain V6.5 Intelligence Report</h1>
@@ -75,8 +78,8 @@ def send_email_report(report_content=None):
                 {chart_html}
                 <h3 style="color: #60a5fa; text-align: right;">💰 أداء المحفظة الافتراضية (نظرة سريعة)</h3>
                 <p style="text-align: right; font-size: 16px;">
-                    **القيمة الحالية:** <span style="color: #22c55e; font-weight: bold;">{latest_portfolio_value:.2f}$</span><br>
-                    **النمو الإجمالي:** <span style="color: {'#22c55e' if portfolio_growth_percentage >= 0 else '#ef4444'}; font-weight: bold;">{portfolio_growth_percentage:.2f}%</span>
+                    <b>القيمة الحالية:</b> <span style="color: #22c55e; font-weight: bold;">{latest_portfolio_value:.2f}$</span><br>
+                    <b>النمو الإجمالي:</b> <span style="color: {growth_color}; font-weight: bold;">{portfolio_growth_percentage:.2f}%</span>
                 </p>
             </div>
             <div style="background-color: #f0f4f8; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e2e8f0;">
@@ -91,7 +94,8 @@ def send_email_report(report_content=None):
     msg = MIMEMultipart()
     msg["From"] = f"XenonBrain AI <{sender_email}>"
     msg["To"] = receiver_email
-    msg["Subject"] = f"🧠 تقرير XenonBrain V6.5 اليومي | {datetime.datetime.now().strftime("%Y-%m-%d")}"
+    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    msg["Subject"] = f"🧠 تقرير XenonBrain V6.5 اليومي | {today_date}"
     
     msg.attach(MIMEText(html_content, "html"))
 
