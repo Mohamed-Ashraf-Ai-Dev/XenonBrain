@@ -124,5 +124,13 @@
         "confidence": 0.6186444759368896,
         "actual_outcome": null,
         "portfolio_value": 1024.207600624495
+    },
+    {
+        "date": "2026-05-11 04:06:45",
+        "summary": "Daily Crypto Discussion - May 10, 2026 (GMT+0) Welcome to the Daily Crypto Discussion thread. Please read the disclaimer and rules before participatin",
+        "prediction": 1,
+        "confidence": 0.5342337489128113,
+        "actual_outcome": null,
+        "portfolio_value": 1029.3286386276172
     }
 ]
