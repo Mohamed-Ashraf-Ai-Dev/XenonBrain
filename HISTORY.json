@@ -138,7 +138,7 @@
         "summary": "Daily Crypto Discussion - May 11, 2026 (GMT+0) Welcome to the Daily Crypto Discussion thread. Please read the disclaimer and rules before participatin",
         "prediction": 1,
         "confidence": 0.568918764591217,
-        "actual_outcome": null,
+        "actual_outcome": 1,
         "portfolio_value": 1034.4752818207553
     },
     {
@@ -148,5 +148,13 @@
         "confidence": 0.6097904443740845,
         "actual_outcome": null,
         "portfolio_value": 1039.647658229859
+    },
+    {
+        "date": "2026-05-14 03:58:31",
+        "summary": "AI helps man recover $400,000 in Bitcoin 11 years after he got high and forgot password       &#32; submitted by &#32;  /u/IndicaOatmeal   [link] &#32",
+        "prediction": 1,
+        "confidence": 0.6066045165061951,
+        "actual_outcome": null,
+        "portfolio_value": 1044.8458965210082
     }
 ]
