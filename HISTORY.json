@@ -178,7 +178,7 @@
         "summary": "Daily Crypto Discussion - May 16, 2026 (GMT+0) Welcome to the Daily Crypto Discussion thread. Please read the disclaimer and rules before participatin",
         "prediction": 1,
         "confidence": 0.6152455806732178,
-        "actual_outcome": null,
+        "actual_outcome": 0,
         "portfolio_value": 1060.597079016799
     },
     {
@@ -188,5 +188,13 @@
         "confidence": 0.6002916097640991,
         "actual_outcome": null,
         "portfolio_value": 1065.9000644118828
+    },
+    {
+        "date": "2026-05-19 04:10:20",
+        "summary": "Daily Crypto Discussion - May 18, 2026 (GMT+0) Welcome to the Daily Crypto Discussion thread. Please read the disclaimer and rules before participatin",
+        "prediction": 1,
+        "confidence": 0.5397138595581055,
+        "actual_outcome": null,
+        "portfolio_value": 1071.2295647339422
     }
 ]
